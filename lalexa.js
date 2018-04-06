@@ -11,7 +11,7 @@ const rl = readline.createInterface({
   });
 
 
-// let spotify = new Spotify(keys.spotify);
+let spotify = new Spotify(keys.spotify);
 let twitter = new Twitter(keys.twitter);
 
 
@@ -19,7 +19,24 @@ welcome();
 
 //* `my-tweets`
 function myTweets(){
-    console.log('tweet');
+
+    let params = {screen_name: 'ehurst01'};
+    twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
+        // console.log(response)
+        if(error){
+            rl.close();
+            console.log(error);
+            
+        }
+
+        else  if (!error) {
+            console.log(JSON.stringify(tweets,null,2));
+            for(let i=0; i<20; i++){
+                console.log('\n'+tweets[i].text+"\nposted on "+tweets[i].created_at);
+            }
+            rl.close();
+        }
+    });
 }
 //* `spotify-this-song`
   function spotifyThis(){
@@ -114,5 +131,6 @@ function processRequest(request){
         case 'do-what-it-says':
             doThings()
             break;
+            default:
     }
 }
