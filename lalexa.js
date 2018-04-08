@@ -40,7 +40,25 @@ function myTweets(){
 }
 //* `spotify-this-song`
   function spotifyThis(){
-      console.log('I\'m Spotifying Stuff');
+    rl.question("Enter a track: ", (response)=>{
+        spotify.search({ type: 'track', query: response })
+        .then(function(response) {
+          rl.close();
+            // Artist(s)
+            // The song's name
+            
+            console.log('Artist: ' + JSON.stringify(response.tracks.items[0].album.artists[0].name,null,2));
+            // A preview link of the song from Spotify
+            console.log('Preview: '+ JSON.stringify(response.tracks.items[0].preview_url,null,2));
+            // The album that the song is from
+            console.log('Album: '+ JSON.stringify(response.tracks.items[0].album.name,null,2));
+        })
+        .catch(function(err) {
+          console.log(err);
+          rl.close();
+        });
+    });
+    
   }
 //* `movie-this`
   function movieThis(){
@@ -95,7 +113,6 @@ function movieThis (){
                 // * IMDB Rating of the movie.
                 console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
                 // * Rotten Tomatoes Rating of the movie.
-            
                 JSON.parse(body).Ratings.forEach(element => {
                     if(element.Source==='Rotten Tomatoes')
                     console.log("Rotten Tomatoes Rating: " + element.Value);
@@ -131,6 +148,7 @@ function processRequest(request){
         case 'do-what-it-says':
             doThings()
             break;
-            default:
+            default: 
+            welcome();
     }
 }
