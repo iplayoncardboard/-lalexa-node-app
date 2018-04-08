@@ -5,6 +5,7 @@ const Twitter = require('twitter');
 const keys = require('./keys.js');
 const readline = require('readline');
 const request = require('request');
+const fs = require('fs');
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -60,13 +61,21 @@ function myTweets(){
     });
     
   }
-//* `movie-this`
-  function movieThis(){
-      console.log('Movies');
-  }
+
 //* `do-what-it-says`
 function doThings(){
+    const filePath = './random.txt'
     console.log('Doin Stuff');
+
+    fs.readFile(filePath,'utf8', (err, data)=> {
+        if(err){
+            return console.log(err);
+        }
+        //split on ,
+        let commandArray = data.split(',');
+        processRequest(commandArray[0]);
+    });
+
 }
 
 //for fun
