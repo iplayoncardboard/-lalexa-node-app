@@ -116,7 +116,7 @@ function welcome(){
     console.log ('\nGlobal-Thermalnuclear-War')
     rl.question(':', (response)=> {
         // rl.close();
-        let action = response.toLocaleLowerCase();
+        let action = response.toLocaleLowerCase().trim();
 
             
             processRequest(action)
