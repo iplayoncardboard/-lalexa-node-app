@@ -40,26 +40,48 @@ function myTweets(){
     });
 }
 //* `spotify-this-song`
-  function spotifyThis(){
-    rl.question("Enter a track: ", (response)=>{
-        spotify.search({ type: 'track', query: response })
-        .then(function(response) {
-          rl.close();
-            // Artist(s)
-            // The song's name
-            
-            console.log('Artist: ' + JSON.stringify(response.tracks.items[0].album.artists[0].name,null,2));
-            // A preview link of the song from Spotify
-            console.log('Preview: '+ JSON.stringify(response.tracks.items[0].preview_url,null,2));
-            // The album that the song is from
-            console.log('Album: '+ JSON.stringify(response.tracks.items[0].album.name,null,2));
-        })
-        .catch(function(err) {
-          console.log(err);
-          rl.close();
+  function spotifyThis(song){
+      if(song){
+            spotify.search({ type: 'track', query: song })
+            .then(function(response) {
+              rl.close();
+                // Artist(s)
+                // The song's name
+                
+                console.log('Artist: ' + JSON.stringify(response.tracks.items[0].album.artists[0].name,null,2));
+                // A preview link of the song from Spotify
+                console.log('Preview: '+ JSON.stringify(response.tracks.items[0].preview_url,null,2));
+                // The album that the song is from
+                console.log('Album: '+ JSON.stringify(response.tracks.items[0].album.name,null,2));
+                return
+            })
+            .catch(function(err) {
+              console.log(err);
+              rl.close();
+            });
+
+    }
+    else{
+        rl.question("Enter a track: ", (response)=>{
+            spotify.search({ type: 'track', query: response })
+            .then(function(response) {
+              rl.close();
+                // Artist(s)
+                // The song's name
+                
+                console.log('Artist: ' + JSON.stringify(response.tracks.items[0].album.artists[0].name,null,2));
+                // A preview link of the song from Spotify
+                console.log('Preview: '+ JSON.stringify(response.tracks.items[0].preview_url,null,2));
+                // The album that the song is from
+                console.log('Album: '+ JSON.stringify(response.tracks.items[0].album.name,null,2));
+            })
+            .catch(function(err) {
+              console.log(err);
+              rl.close();
+            });
         });
-    });
-    
+    }
+
   }
 
 //* `do-what-it-says`
@@ -73,7 +95,7 @@ function doThings(){
         }
         //split on ,
         let commandArray = data.split(',');
-        processRequest(commandArray[0]);
+        processRequest(commandArray[0], commandArray[1]);
     });
 
 }
@@ -95,6 +117,7 @@ function welcome(){
     rl.question(':', (response)=> {
         // rl.close();
         let action = response.toLocaleLowerCase();
+
             
             processRequest(action)
         });
@@ -140,19 +163,19 @@ function movieThis (){
         });
       }
 
-function processRequest(request){
+function processRequest(request, input){
     switch(request){
         case 'my-tweets':
             myTweets();
             break;
         case 'spotify-this-song':
-            spotifyThis();
+            spotifyThis(input);
             break;
         case 'global-thermalnuclear-war':
             nukes();
             break;
         case 'movie-this' :
-            movieThis();
+            movieThis(input);
             break;
         case 'do-what-it-says':
             doThings()
